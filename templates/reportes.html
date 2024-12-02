@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Reportes</title>
+</head>
+<body>
+    <h1>Lista de Reportes</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Paciente</th>
+            <th>Fecha</th>
+            <th>Síntomas</th>
+            <th>Observaciones</th>
+            <th>Diagnóstico</th>
+            <th>Médico</th>
+        </tr>
+        {% for reporte in reportes %}
+        <tr>
+            <td>{{ reporte[0] }}</td>
+            <td>{{ reporte[1] }}</td>
+            <td>{{ reporte[2] }}</td>
+            <td>{{ reporte[3] }}</td>
+            <td>{{ reporte[4] }}</td>
+            <td>{{ reporte[5] }}</td>
+            <td>{{ reporte[6] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
