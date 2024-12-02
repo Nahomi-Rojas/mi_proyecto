@@ -1,50 +1,74 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 import psycopg2
 import os
 
 app = Flask(__name__)
 
-# Función para conectar a la base de datos PostgreSQL en Render
+# Conexión a la base de datos PostgreSQL en Render
 def get_db_connection():
     conn = psycopg2.connect(
-        os.environ['postgresql://proyecto_pydy_user:uRNXj5lmOTpTrIML4X5irY7UDqHbnl70@dpg-ct6j0cqj1k6c73aehd70-a.oregon-postgres.render.com/proyecto_pydy'], sslmode='require'
+        os.environ['DATABASE_URL'], sslmode='require'
     )
     return conn
 
+# Página principal
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/reportes')
-def reportes():
+
+
+# Ruta para ver pacientes
+@app.route('/pacientes')
+def pacientes():
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM reportes;')
-    reportes = cursor.fetchall()
+    cursor.execute('SELECT * FROM pacientes;')
+    pacientes = cursor.fetchall()
     conn.close()
-    return render_template('reportes.html', reportes=reportes)
+    return render_template('pacientes.html', pacientes=pacientes)
+
+# Ruta para ver imágenes
+@app.route('/imagenes')
+def imagenes():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM imagenes;')
+    imagenes = cursor.fetchall()
+    conn.close()
+    return render_template('imagenes.html', imagenes=imagenes)
+
+# Ruta para ver diagnósticos
+@app.route('/diagnostico')
+def diagnostico():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM diagnostico;')
+    diagnosticos = cursor.fetchall()
+    conn.close()
+    return render_template('diagnostico.html', diagnosticos=diagnosticos)
 
 if __name__ == '__main__':
     app.run(debug=True)
 
-# Crear tablas en la base de datos (ejecuta esto una sola vez)
 def inicializar_bd():
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS reportes (
-            id SERIAL PRIMARY KEY,
-            paciente TEXT NOT NULL,
-            fecha TEXT NOT NULL,
-            sintomas TEXT NOT NULL,
-            observaciones TEXT,
-            diagnostico TEXT NOT NULL
-        )
+    # Aquí agregas las sentencias SQL de creación de tablas.
+    cursor.execute(''' 
+        CREATE TABLE IF NOT EXISTS pacientes (
+            id_paciente SERIAL PRIMARY KEY,
+            nombre VARCHAR(100) NOT NULL,
+            edad INT,
+            genero VARCHAR(10),
+            fecha_reporte DATE NOT NULL,
+            historial_clinico TEXT
+        );
     ''')
+    # Crear el resto de las tablas
     conn.commit()
     conn.close()
-    print("Tabla creada correctamente.")
 
-# Ejecuta esto una sola vez en Render
 if __name__ == '__main__':
-    inicializar_bd()
+    inicializar_bd()  # Crear tablas
+    app.run(debug=True)

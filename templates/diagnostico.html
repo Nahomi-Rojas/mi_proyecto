@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Diagnóstico</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Diagnósticos de Imágenes</h1>
+    <table>
+        <tr>
+            <th>ID Diagnóstico</th>
+            <th>ID Imagen</th>
+            <th>Diagnóstico</th>
+            <th>Grado</th>
+            <th>Observaciones</th>
+            <th>Fecha Diagnóstico</th>
+        </tr>
+        {% for diagnostico in diagnosticos %}
+        <tr>
+            <td>{{ diagnostico[0] }}</td>
+            <td>{{ diagnostico[1] }}</td>
+            <td>{{ diagnostico[2] }}</td>
+            <td>{{ diagnostico[3] }}</td>
+            <td>{{ diagnostico[4] }}</td>
+            <td>{{ diagnostico[5] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

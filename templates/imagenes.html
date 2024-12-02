@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Imágenes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Imágenes de Pacientes</h1>
+    <table>
+        <tr>
+            <th>ID Imagen</th>
+            <th>Paciente</th>
+            <th>Imagen URL</th>
+            <th>Tipo de Imagen</th>
+            <th>Fecha Imagen</th>
+            <th>Resultado Análisis</th>
+        </tr>
+        {% for imagen in imagenes %}
+        <tr>
+            <td>{{ imagen[0] }}</td>
+            <td>{{ imagen[1] }}</td>
+            <td><a href="{{ imagen[2] }}" target="_blank">Ver Imagen</a></td>
+            <td>{{ imagen[3] }}</td>
+            <td>{{ imagen[4] }}</td>
+            <td>{{ imagen[5] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
