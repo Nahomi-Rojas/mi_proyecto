@@ -16,8 +16,6 @@ def get_db_connection():
 def index():
     return render_template('index.html')
 
-
-
 # Ruta para ver pacientes
 @app.route('/pacientes')
 def pacientes():
@@ -48,13 +46,56 @@ def diagnostico():
     conn.close()
     return render_template('diagnostico.html', diagnosticos=diagnosticos)
 
+# Ruta para ver cuestionarios
+@app.route('/cuestionario')
+def cuestionario():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM cuestionario;')
+    cuestionarios = cursor.fetchall()
+    conn.close()
+    return render_template('cuestionario.html', cuestionarios=cuestionarios)
+
+# Ruta para ver reportes
+@app.route('/reportes')
+def reportes():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM reportes;')
+    reportes = cursor.fetchall()
+    conn.close()
+    return render_template('reportes.html', reportes=reportes)
+
+# Ruta para ver usuarios
+@app.route('/usuarios')
+def usuarios():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM usuarios;')
+    usuarios = cursor.fetchall()
+    conn.close()
+    return render_template('usuarios.html', usuarios=usuarios)
+
+# Ruta para ver sesiones
+@app.route('/sesiones')
+def sesiones():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM sesiones;')
+    sesiones = cursor.fetchall()
+    conn.close()
+    return render_template('sesiones.html', sesiones=sesiones)
+
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
+
 
 def inicializar_bd():
     conn = get_db_connection()
     cursor = conn.cursor()
-    # Aquí agregas las sentencias SQL de creación de tablas.
     cursor.execute(''' 
         CREATE TABLE IF NOT EXISTS pacientes (
             id_paciente SERIAL PRIMARY KEY,
@@ -65,10 +106,10 @@ def inicializar_bd():
             historial_clinico TEXT
         );
     ''')
-    # Crear el resto de las tablas
+    # Aquí puedes agregar las demás sentencias para crear las tablas.
     conn.commit()
     conn.close()
 
 if __name__ == '__main__':
-    inicializar_bd()  # Crear tablas
+    inicializar_bd()  # Crear tablas al iniciar
     app.run(debug=True)
